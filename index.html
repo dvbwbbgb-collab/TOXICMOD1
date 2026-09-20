@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TOXICMOD1</title>
+<style>
+*{box-sizing:border-box}
+html,body{margin:0;width:100%;height:100%;font-family:Arial,sans-serif;overflow:hidden}
+body{background:#000}
+video{
+  position:fixed;inset:0;width:100%;height:100%;
+  object-fit:cover;z-index:-2;
+}
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.28);z-index:-1}
+.wrap{
+  width:100%;height:100%;display:flex;align-items:center;
+  justify-content:center;padding:24px;
+}
+.card{
+  width:min(390px,92vw);text-align:center;
+}
+h1{
+  margin:0 0 34px;font-size:44px;line-height:1;
+  font-weight:900;letter-spacing:1px;color:#ff1744;
+  text-shadow:0 3px 12px rgba(0,0,0,.45);
+}
+.label{
+  display:block;margin-bottom:10px;font-size:20px;
+  font-weight:800;color:#ffe600;text-shadow:0 2px 6px #000;
+}
+input{
+  width:100%;height:54px;border-radius:30px;
+  border:3px solid #ff3158;background:#fff;
+  padding:0 20px;font-size:17px;outline:none;
+  text-align:center;
+}
+.buttons{display:flex;gap:14px;margin-top:18px}
+button,a{
+  flex:1;height:52px;border:0;border-radius:30px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:17px;font-weight:900;text-decoration:none;
+  cursor:pointer;
+}
+button{background:#ff8a00;color:#fff}
+a{background:#ff8a00;color:#fff}
+#sound{
+  position:fixed;right:16px;bottom:16px;width:48px;height:48px;
+  border-radius:50%;background:rgba(0,0,0,.55);color:#fff;
+  border:1px solid rgba(255,255,255,.5);font-size:21px;
+}
+#msg{min-height:22px;margin-top:12px;color:#fff;font-weight:700;text-shadow:0 2px 5px #000}
+</style>
+</head>
+<body>
+<video id="bg" autoplay muted loop playsinline>
+  <source src="6004.mp4" type="video/mp4">
+</video>
+<div class="overlay"></div>
+
+<div class="wrap">
+  <div class="card">
+    <h1>TOXICMOD1</h1>
+    <span class="label">Enter Your key</span>
+    <input id="key" type="text" placeholder="Enter Your key" autocomplete="off">
+    <div class="buttons">
+      <a href="https://t.me/Toxicmod7" target="_blank" rel="noopener">GET KEY</a>
+      <button id="login">LOGIN</button>
+    </div>
+    <div id="msg"></div>
+  </div>
+</div>
+
+<button id="sound" aria-label="Sound">🔇</button>
+
+<script>
+const video=document.getElementById('bg');
+const sound=document.getElementById('sound');
+sound.onclick=()=>{
+  video.muted=!video.muted;
+  sound.textContent=video.muted?'🔇':'🔊';
+  video.play().catch(()=>{});
+};
+document.getElementById('login').onclick=async()=>{
+  const key=document.getElementById('key').value.trim();
+  const msg=document.getElementById('msg');
+  if(!key){msg.textContent='Please enter your key';return;}
+  msg.textContent='Checking...';
+  try{
+    const r=await fetch('/.netlify/functions/verify-key',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({key})
+    });
+    const data=await r.json().catch(()=>({}));
+    if(r.ok && data.success){
+      location.href='/home.html';
+    }else{
+      msg.textContent=data.message||'Invalid key';
+    }
+  }catch(e){
+    msg.textContent='Server error. Please try again.';
+  }
+};
+</script>
+</body>
+</html>
