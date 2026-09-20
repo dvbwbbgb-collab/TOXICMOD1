@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TOXICMOD1</title>
+  <style>
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: #111;
+      color: white;
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .box {
+      width: min(92%, 520px);
+      text-align: center;
+    }
+    h1 { margin-bottom: 25px; }
+    input, button, a {
+      box-sizing: border-box;
+      width: 100%;
+      padding: 14px;
+      margin: 7px 0;
+      border-radius: 8px;
+      border: 0;
+      font-size: 16px;
+    }
+    input { background: white; color: #111; }
+    button, a {
+      display: block;
+      text-decoration: none;
+      cursor: pointer;
+      background: #222;
+      color: white;
+    }
+    video {
+      width: 100%;
+      margin-top: 20px;
+      border-radius: 10px;
+      background: black;
+    }
+    #msg { min-height: 22px; }
+  </style>
+</head>
+<body>
+  <div class="box">
+    <h1>TOXICMOD1</h1>
+
+    <input id="key" type="text" placeholder="Enter Your key">
+
+    <a href="https://t.me/" target="_blank">GET KEY</a>
+
+    <button id="login">LOGIN</button>
+    <button id="sound">🔇</button>
+
+    <p id="msg"></p>
+
+    <video id="bg" controls playsinline>
+      <source src="6004.mp4" type="video/mp4">
+      Your browser does not support video.
+    </video>
+  </div>
+
+  <script>
+    const video = document.getElementById('bg');
+    const sound = document.getElementById('sound');
+
+    sound.onclick = () => {
+      video.muted = !video.muted;
+      sound.textContent = video.muted ? '🔇' : '🔊';
+      video.play().catch(() => {});
+    };
+
+    document.getElementById('login').onclick = () => {
+      const key = document.getElementById('key').value.trim();
+      document.getElementById('msg').textContent =
+        key ? 'Key entered.' : 'Please enter your key.';
+    };
+  </script>
+</body>
+</html>
